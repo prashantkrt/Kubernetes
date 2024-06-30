@@ -1,0 +1,186 @@
+minikube start 
+minikube status 
+minikube stop 
+minikube pause
+minikube unpause
+minikube delete
+
+kubectl config view 
+
+kubectl run firstpod --image=nginx
+kubectl get pods 
+kubectl describe pod secondpod
+
+kubectl exec -it secondpod -- /bin/bash 
+
+ ls /
+ cd /usr/share/nginx/html
+ cat index.html
+ apt-get update 
+ apt-get install curl
+ curl localhost:80
+ exit
+
+kubectl delete pod secondpod
+
+// using yaml 
+kind: Pod
+apiVersion: v1
+metadata: 
+   name: firstpod
+spec: 
+ containers:
+   - name: db
+     image: redis
+   - name : web
+     image : httpd  
+
+ go to the director of the file 
+ kubectl create -f firstpod.yml
+ kubectl delete -f firstpod.yml
+
+ // going inside the container
+ kubectl exec -it firstpod --container db -- /bin/bash
+
+ // deletes everything for me pods and k8s services 
+ kubectl delete all --all
+
+ kubectl get all --show-labels
+
+
+// labels and selector
+
+kind: Pod
+apiVersion: v1
+metadata: 
+   name: firstpod
+   labels: 
+     app: sp
+     release : stable 
+     team: red 
+   annotations:
+spec: 
+ containers:
+   - name: db
+     image: redis
+   - name : web
+     image : httpd  
+
+
+kubectl get all --selector='release'
+kubectl get all --selector!='release' 
+kubectl get all --selector!='release' 
+
+kubectl get all --selector='app in (sp)'
+
+kubectl get all --selector='app in (sp)'
+
+kubectl get all --selector='app=sp,team=red'
+
+// annotations like key value just to have information for other developer
+
+//Namespaces 
+kubectl get ns
+kubectl create ns firstns
+kubectl create -f firstpod.yml --namespace firstns
+kubectl get pods --namespace firstns
+
+kubectl config view     
+kubectl config set-context --current --namespace firstns
+//now we don't have to use --namespace anymore
+
+kubectl get all // to get all the resouces 
+
+//dry run 
+kubectl create -f firstpod.yml --dry-run=client
+
+//for getting the yaml 
+kubectl get pod/firstpod -o yaml
+
+//gives the details for yaml config
+kubectl explain pod 
+
+minikube is local Kubernetes, focusing on making it easy to learn and develop for Kubernetes.
+all you need is Docker (or similarly compatible) container or a Virtual Machine environment, and Kubernetes is a single command away: minikube start
+
+minikube dashboard
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name: mywebserver
+   labels: 
+      app: httpd    
+spec: 
+  replicas: 2
+  selector:
+      matchLabels: 
+          app: httpd
+  template: 
+      metadata:        
+          labels:
+             app: httpd
+      spec: 
+          containers:
+            - name: myhttpd
+              image: httpd
+              ports: 
+               - containerPort: 80
+kubectl get deployments 
+
+apiVersion: v1
+kind: Service
+metadata: 
+    name : webserversvc
+spec: 
+    type: NodePort
+    ports:
+        - nodePort : 30123
+          port: 80
+          targetPort: 80
+          protocol: TCP
+    selector:
+          app: httpd      
+
+kubectl get services
+
+//access in public 
+minikube service webserversvc --namespace=firstns
+
+kubectl get deploy
+kubectl delete deployment mywebserver 
+
+// versions of deployment
+kubectl rollout history deployment
+//changes 
+kubectl rollout history deployment mywebserver --revision=2
+
+//rollback
+kubectl rollout undo deployment mywebserver --to-revision=1
+
+
+kubectl scale deployment mywebserver --replicas=20
+
+
+//Volumes 
+apiVersion: v1 
+kind: ConfigMap
+metadata: 
+     name : demo-configmap
+data: 
+  initdb.sql: 
+    select * from product;
+    create table from coupan();     
+  keys: 
+    sfhskfh hfshfkshf   
+
+
+ kubectl get configmap   
+ kubectl exec -it mywebserver-f7fddc466-27hvx   -- bash 
+ cd /etc/config
+
+ //secrets 
+ 
+
+
+

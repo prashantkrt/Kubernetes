@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name: mywebserver
+   labels: 
+      app: httpd    
+spec: 
+  replicas: 10
+  strategy: 
+      type:  RollingUpdate
+      rollingUpdate : 
+         maxSurge: 3
+         maxUnavailable: 4       
+  selector:
+      matchLabels: 
+          app: httpd
+  template: 
+      metadata:        
+          labels:
+             app: httpd
+      spec: 
+          containers:
+            - name: myhttpd
+              image: httpd
+              ports: 
+               - containerPort: 80
+              volumeMounts: 
+                - name : demovol 
+                  mountPath: /data 
+                - name: demo-config-map-vol
+                  mountPath: /etc/config  
+          volumes: 
+            - name: demovol
+              hostPath:
+                 path: /data
+                 type: Directory 
+
+            - name : demo-config-map-vol
+              configMap: 
+                 name: demo-configmap
+                  
+
+
+    
+
+  
