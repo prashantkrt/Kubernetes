@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name: coupan-app
+   labels: 
+      app: coupan-app
+spec: 
+  replicas: 1 
+  selector:
+      matchLabels: 
+          app: coupan-app
+  template: 
+      metadata:  
+          name: coupan-app     
+          labels:            
+             app: coupan-app
+      spec: 
+          containers:
+            - name: coupan-app
+              image: dockerhub/ourservicename/ecrpath:vtag
+             
+              
+           
+                  
+
+
+    
+
+  

@@ -1,0 +1,7 @@
+kubectl create -f docker-mysql-configmap.yml,docker-mysql-deploy.yml,docker-mysql-service.yml
+kubectl get configmaps
+kubectl get pods 
+kubectl get deployments
+
+//connect to local mysql for the ip which we will get and expose port : 30287 provided
+minikube ip

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:    
+    name: coupan-app 
+    labels:     
+        app: coupan-app
+spec: 
+    type: NodePort
+    ports:
+        - nodePort : 30288
+          port: 9091
+          targetPort: 9091         
+    selector:
+          app: coupan-app   
