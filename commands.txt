@@ -180,7 +180,41 @@ data:
  cd /etc/config
 
  //secrets 
- 
+ apiVersion: v1 
+kind: Secret
+metadata: 
+     name : demo-secret
+type: Opaque     
+data: 
+  userName:  bXl1c2VybmFtZQoK //base 64
+  password:  bXlwYXNzd29yZAoK
+      
 
+//pv 
+apiVersion: v1 
+kind: PersistentVolume
+metadata: 
+     name : demo-persistent-volume
+spec: 
+   capacity: 
+      storage: 128M
+   accessModes: 
+      - ReadWriteOnce
+   hostPath: 
+     path: /data/demo-persistent-volume   
+         
+kubectl get pv    
 
+//pvc
+apiVersion: v1 
+kind: PersistentVolumeClaim
+metadata: 
+     name : demo-pvc
+spec: 
+   resources: 
+      requests: 
+        storage: 64M
+   accessModes: 
+      - ReadWriteOnce
+  
 

@@ -29,15 +29,25 @@ spec:
                   mountPath: /data 
                 - name: demo-config-map-vol
                   mountPath: /etc/config  
+                - name:  demo-secret-vol    
+                  mountPath: /etc/mysecrets
+                - name:  demo-pvc
+                  mountPath: /data/clustervol
+
           volumes: 
             - name: demovol
               hostPath:
                  path: /data
                  type: Directory 
-
             - name : demo-config-map-vol
               configMap: 
                  name: demo-configmap
+            - name: demo-secret-vol     
+              secret :
+                 secretName: demo-secret 
+            - name : demo-pvc
+              persistentVolumeClaim: 
+                  claimName: demo-pvc     
                   
 
 
